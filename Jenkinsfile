@@ -1,34 +1,37 @@
-pipeline{
+pipeline {
     agent {
-        docker{
-            image:'python:3.12'
-
+        docker {
+            image 'python:3.12'
         }
     }
-    stages{
-        stage('Install Dependencies'){
-            steps{
+
+    stages {
+        stage('Install Dependencies') {
+            steps {
                 sh '''
                 pip install -r requirements.txt
                 '''
             }
         }
-        stage('Run Unit Tests'){
-            steps{
+
+        stage('Run Unit Tests') {
+            steps {
                 sh '''
                 pytest -v
                 '''
             }
         }
-        stage ('Generate Coverage Report'){
-            steps{
+
+        stage('Generate Coverage Report') {
+            steps {
                 sh '''
                 pytest --cov=calculator --cov-report=xml
                 '''
             }
         }
-        stage('Run Application'){
-            steps{
+
+        stage('Run Application') {
+            steps {
                 sh '''
                 python calculator.py
                 '''
@@ -36,15 +39,15 @@ pipeline{
         }
     }
 
-    post{
-        always{
-            echo 'pipeline completed'
+    post {
+        always {
+            echo 'Pipeline completed'
         }
-        success{
-            echo 'pipeline succeeded'
+        success {
+            echo 'Pipeline succeeded'
         }
-        failure{
-            echo 'pipeline failed'
-    }
+        failure {
+            echo 'Pipeline failed'
+        }
     }
 }
