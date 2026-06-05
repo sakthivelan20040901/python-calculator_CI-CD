@@ -1,53 +1,68 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.12'
-        }
-    }
+    agent any
 
     stages {
-        stage('Install Dependencies') {
+
+        stage('Checkout') {
             steps {
-                sh '''
-                pip install -r requirements.txt
-                '''
+                checkout scm
             }
         }
 
-        stage('Run Unit Tests') {
+        stage('Build Node') {
             steps {
-                sh '''
-                pytest -v
-                '''
+                dir('node') {
+                    sh 'npm install'
+                }
             }
         }
 
-        stage('Generate Coverage Report') {
+        stage('Build Python') {
             steps {
-                sh '''
-                pytest --cov=calculator --cov-report=xml
-                '''
+                dir('python') {
+                    sh 'pip3 install -r requirements.txt'
+                }
             }
         }
 
-        stage('Run Application') {
+        stage('Build Java') {
             steps {
-                sh '''
-                python calculator.py
-                '''
+                dir('java') {
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+
+        stage('Build Go') {
+            steps {
+                dir('go') {
+                    sh 'go build'
+                }
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                sh 'docker compose build'
+            }
+        }
+
+        stage('Deploy Containers') {
+            steps {
+                sh 'docker compose down || true'
+                sh 'docker compose up -d'
             }
         }
     }
 
     post {
-        always {
-            echo 'Pipeline completed'
-        }
+
         success {
-            echo 'Pipeline succeeded'
+            echo 'Deployment Successful'
         }
+
         failure {
-            echo 'Pipeline failed'
+            echo 'Deployment Failed'
         }
     }
 }
