@@ -1,25 +1,55 @@
-const express = require('express');
+const express = require("express");
+const axios = require("axios");
+
 const app = express();
 
-app.use(express.json());
+app.use(express.static("public"));
 
-let users = [
-    { id: 1, name: "Sakthivelan" }
-];
+app.get("/api/products", async (req, res) => {
 
-app.get('/', (req, res) => {
-    res.json({ service: 'Node.js', status: 'healthy' });
+    const products =
+        await axios.get("http://java:8080/products");
+
+    res.json(products.data);
 });
 
-app.get('/users', (req, res) => {
-    res.json(users);
-});
+app.get("/api/product/:id", async (req, res) => {
 
-app.post('/users', (req, res) => {
-    users.push(req.body);
-    res.status(201).json(req.body);
+    const id = req.params.id;
+
+    try {
+
+        const product =
+            await axios.get(`http://java:8080/products/${id}`);
+
+        const inventory =
+            await axios.get(`http://go:8081/inventory/${id}`);
+
+        const recommendation =
+            await axios.get(`http://python:5000/recommend/${id}`);
+
+        const billing =
+    await axios.get(
+        `http://php/?price=${product.data.price}`
+    );
+
+        res.json({
+            product: product.data,
+            inventory: inventory.data,
+            recommendation: recommendation.data,
+            billing: billing.data
+        });
+
+    } catch (err) {
+
+        res.status(500).json({
+            error: err.message
+        });
+
+    }
+
 });
 
 app.listen(3000, () => {
-    console.log('Node Service Running');
+    console.log("Gateway Running");
 });

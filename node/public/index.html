@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PolyShop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+
+    <header>
+
+        <div class="navbar">
+
+            <div class="logo">
+                🛒 PolyShop
+            </div>
+
+            <div class="search-container">
+
+                <input
+                    type="text"
+                    id="search"
+                    placeholder="Search products...">
+
+            </div>
+
+            <div class="nav-actions">
+
+                <button class="cart-btn"
+                        onclick="openCart()">
+
+                    🛒 Cart
+                    (<span id="cart-count">0</span>)
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- Hero Section -->
+
+    <section class="hero">
+
+        <h2>Welcome to PolyShop</h2>
+
+        <p>
+            Built using Node.js, Java,
+            Python, Go and PHP Microservices
+        </p>
+
+    </section>
+
+    <!-- Product Grid -->
+
+    <main>
+
+        <div
+            class="products"
+            id="products">
+
+        </div>
+
+    </main>
+
+    <!-- Modal -->
+
+    <div
+        id="modal"
+        class="modal">
+
+        <div class="modal-content">
+
+            <span
+                class="close"
+                onclick="closeModal()">
+
+                &times;
+
+            </span>
+
+            <div id="modal-body"></div>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+    <div id="toast" class="toast">
+    Product added to cart 🛒
+</div>
+
+</body>
+</html>

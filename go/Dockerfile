@@ -1,18 +1,12 @@
-FROM golang:1.24 AS builder
+FROM golang:1.25 AS builder
 
 WORKDIR /app
-
-COPY go.mod ./
-RUN go mod download
-
 COPY . .
+RUN go build -o main main.go
 
-RUN go build -o main .
+FROM debian:bookworm-slim
 
-FROM alpine:latest
-
-WORKDIR /root/
-
+WORKDIR /app
 COPY --from=builder /app/main .
 
 EXPOSE 8081
