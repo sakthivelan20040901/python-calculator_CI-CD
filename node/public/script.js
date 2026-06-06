@@ -1,9 +1,13 @@
 async function loadProducts() {
 
-    const response = await fetch("/api/products");
-    const products = await response.json();
+    const response =
+        await fetch("/api/products");
 
-    const container = document.getElementById("products");
+    const products =
+        await response.json();
+
+    const container =
+        document.getElementById("products");
 
     container.innerHTML = "";
 
@@ -12,7 +16,7 @@ async function loadProducts() {
         container.innerHTML += `
         <div class="card">
 
-            <img src="${product.image}" alt="${product.name}">
+            <img src="${product.image}">
 
             <div class="card-content">
 
@@ -45,120 +49,65 @@ async function viewProduct(id) {
     const data =
         await response.json();
 
-    document.getElementById("modal-body").innerHTML = `
+    document.getElementById("modal-body")
+        .innerHTML = `
 
-    <div class="product-page">
+        <h2>${data.product.name}</h2>
 
-        <div class="product-left">
+        <img
+            src="${data.product.image}"
+            style="
+                width:100%;
+                max-height:300px;
+                object-fit:cover;
+                border-radius:10px;
+            ">
 
-            <img
-                src="${data.product.image}"
-                class="product-image">
+        <h3>₹${data.product.price}</h3>
 
-        </div>
+        <p>
+            Category:
+            ${data.product.category}
+        </p>
 
-        <div class="product-right">
+        <p>
+            Stock:
+            ${data.inventory.stock}
+        </p>
 
-            <h1>${data.product.name}</h1>
+        <p>
+            Status:
+            ${data.inventory.status}
+        </p>
 
-            <p class="category">
-                ${data.product.category}
-            </p>
+        <h3>
+            Total:
+            ₹${data.billing.total}
+        </h3>
 
-            <h2 class="price">
-                ₹${data.product.price}
-            </h2>
+        <button
+            class="cart-button"
+            onclick="addToCart(
+                ${data.product.id},
+                '${data.product.name}',
+                ${data.product.price}
+            )">
 
-            <div class="inventory-box">
+            Add To Cart 🛒
 
-                <h3>Inventory</h3>
-
-                <p>
-                    <strong>Stock:</strong>
-                    ${data.inventory.stock}
-                </p>
-
-                <p>
-                    <strong>Status:</strong>
-                    ${data.inventory.status}
-                </p>
-
-                <p>
-                    <strong>Warehouse:</strong>
-                    ${data.inventory.warehouse}
-                </p>
-
-            </div>
-
-            <div class="billing-box">
-
-                <h3>Order Summary</h3>
-
-                <p>
-                    Tax:
-                    ₹${data.billing.tax}
-                </p>
-
-                <p>
-                    Shipping:
-                    ₹${data.billing.shipping}
-                </p>
-
-                <p>
-                    Discount:
-                    ₹${data.billing.discount}
-                </p>
-
-                <h2>
-                    Total:
-                    ₹${data.billing.total}
-                </h2>
-
-            </div>
-
-            <button
-                class="cart-button"
-                onclick="addToCart(
-                    ${data.product.id},
-                    '${data.product.name}',
-                    ${data.product.price}
-                )">
-
-                Add To Cart 🛒
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <div class="recommend-section">
-
-        <h2>Recommended Products</h2>
-
-        <div class="recommend-grid">
-
-            ${data.recommendation.recommendations
-                .map(item => `
-                    <div class="recommend-card">
-                        ${item}
-                    </div>
-                `)
-                .join("")}
-
-        </div>
-
-    </div>
+        </button>
     `;
 
     document.getElementById("modal")
         .style.display = "flex";
 }
 
-function addToCart(id, name, price) {
+function addToCart(id,name,price){
 
     let cart =
-        JSON.parse(localStorage.getItem("cart")) || [];
+        JSON.parse(
+            localStorage.getItem("cart")
+        ) || [];
 
     cart.push({
         id,
@@ -173,87 +122,104 @@ function addToCart(id, name, price) {
 
     updateCartCount();
 
-    showToast(`${name} added to cart 🛒`);
+    showToast(
+        `${name} added to cart`
+    );
 }
 
-function updateCartCount() {
+function updateCartCount(){
 
     const cart =
-        JSON.parse(localStorage.getItem("cart")) || [];
+        JSON.parse(
+            localStorage.getItem("cart")
+        ) || [];
 
     const counter =
-        document.getElementById("cart-count");
+        document.getElementById(
+            "cart-count"
+        );
 
-    if (counter) {
+    if(counter){
 
-        counter.innerText = cart.length;
+        counter.innerText =
+            cart.length;
     }
 }
 
-function openCart() {
+function openCart(){
 
     const cart =
-        JSON.parse(localStorage.getItem("cart")) || [];
+        JSON.parse(
+            localStorage.getItem("cart")
+        ) || [];
 
     let total = 0;
 
     let html = `
-        <div class="cart-container">
-
-            <h2>🛒 Shopping Cart</h2>
+        <h2>🛒 Shopping Cart</h2>
     `;
 
-    if (cart.length === 0) {
+    if(cart.length === 0){
 
         html += `
-            <p>Your cart is empty.</p>
+            <p>
+                Cart is empty
+            </p>
         `;
 
-    } else {
+    }else{
 
-        cart.forEach((item,index) => {
+        cart.forEach((item,index)=>{
 
             total += item.price;
 
             html += `
-                <div class="cart-item">
 
-                    <div>
+            <div class="cart-item">
 
-                        <h3>${item.name}</h3>
+                <div>
 
-                        <p>₹${item.price}</p>
+                    <h3>
+                        ${item.name}
+                    </h3>
 
-                    </div>
-
-                    <button
-                        class="remove-btn"
-                        onclick="removeFromCart(${index})">
-
-                        Remove
-
-                    </button>
+                    <p>
+                        ₹${item.price}
+                    </p>
 
                 </div>
+
+                <button
+                    class="remove-btn"
+                    onclick="removeFromCart(${index})">
+
+                    Remove
+
+                </button>
+
+            </div>
+
             `;
         });
 
         html += `
-            <hr>
 
-            <h2>Total: ₹${total}</h2>
+        <hr>
 
-            <button
-                class="checkout-btn"
-                onclick="checkout()">
+        <h2>
+            Total:
+            ₹${total}
+        </h2>
 
-                Proceed to Checkout
+        <button
+            class="checkout-btn"
+            onclick="showAddressForm()">
 
-            </button>
+            Proceed To Checkout
+
+        </button>
         `;
     }
-
-    html += `</div>`;
 
     document.getElementById("modal-body")
         .innerHTML = html;
@@ -262,10 +228,12 @@ function openCart() {
         .style.display = "flex";
 }
 
-function removeFromCart(index) {
+function removeFromCart(index){
 
     let cart =
-        JSON.parse(localStorage.getItem("cart")) || [];
+        JSON.parse(
+            localStorage.getItem("cart")
+        ) || [];
 
     cart.splice(index,1);
 
@@ -279,72 +247,293 @@ function removeFromCart(index) {
     openCart();
 }
 
-function checkout() {
+function showAddressForm() {
 
-    alert("🎉 Order Placed Successfully!");
+    document.getElementById("modal-body").innerHTML = `
 
-    localStorage.removeItem("cart");
+        <div class="address-form">
 
-    updateCartCount();
+            <h2>📦 Delivery Address</h2>
 
-    closeModal();
-}
+            <div class="form-group">
 
-function closeModal() {
+                <label>Door / House No</label>
+
+                <input
+                    type="text"
+                    id="doorNo"
+                    placeholder="e.g. 12A">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Street</label>
+
+                <input
+                    type="text"
+                    id="street"
+                    placeholder="Street Name">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Area / Locality</label>
+
+                <input
+                    type="text"
+                    id="area"
+                    placeholder="Area">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>City</label>
+
+                <input
+                    type="text"
+                    id="city"
+                    placeholder="City">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>State</label>
+
+                <input
+                    type="text"
+                    id="state"
+                    placeholder="State">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Pincode</label>
+
+                <input
+                    type="text"
+                    id="pincode"
+                    placeholder="Pincode">
+
+            </div>
+
+            <button
+                class="checkout-btn"
+                onclick="placeOrder()">
+
+                Place Order
+
+            </button>
+
+        </div>
+    `;
 
     document.getElementById("modal")
-        .style.display = "none";
+        .style.display = "flex";
 }
+
+async function placeOrder() {
+
+    const address = {
+
+        doorNo:
+            document.getElementById("doorNo").value,
+
+        street:
+            document.getElementById("street").value,
+
+        area:
+            document.getElementById("area").value,
+
+        city:
+            document.getElementById("city").value,
+
+        state:
+            document.getElementById("state").value,
+
+        pincode:
+            document.getElementById("pincode").value
+    };
+
+    const fullAddress = `
+${address.doorNo},
+${address.street},
+${address.area},
+${address.city},
+${address.state} - ${address.pincode}
+`;
+
+    const cart =
+        JSON.parse(localStorage.getItem("cart")) || [];
+
+    const userId =
+        localStorage.getItem("userId");
+
+    const response =
+        await fetch("/place-order", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                userId,
+                cart,
+                address: fullAddress
+            })
+        });
+
+    const data =
+        await response.json();
+
+    if (data.success) {
+
+        localStorage.removeItem("cart");
+
+        updateCartCount();
+
+        closeModal();
+
+        showToast(
+            "🎉 Order Placed Successfully"
+        );
+
+    } else {
+
+        alert(data.error);
+    }
+}
+
+function openProfile(){
+
+    const username =
+        localStorage.getItem(
+            "username"
+        );
+
+    document.getElementById(
+        "modal-body"
+    ).innerHTML = `
+
+        <h2>
+            👤 ${username}
+        </h2>
+
+        <button
+            class="logout-btn"
+            onclick="logout()">
+
+            Logout
+
+        </button>
+    `;
+
+    document.getElementById(
+        "modal"
+    ).style.display = "flex";
+}
+
+function logout(){
+
+    localStorage.clear();
+
+    window.location =
+        "/login.html";
+}
+
+function loadUser(){
+
+    const username =
+        localStorage.getItem(
+            "username"
+        );
+
+    if(username){
+
+        document.getElementById(
+            "username-display"
+        ).innerText = username;
+    }
+}
+
+function closeModal(){
+
+    document.getElementById(
+        "modal"
+    ).style.display = "none";
+}
+
 function showToast(message){
 
     const toast =
-        document.getElementById("toast");
+        document.getElementById(
+            "toast"
+        );
 
-    toast.innerText = message;
+    toast.innerText =
+        message;
 
-    toast.classList.add("show");
+    toast.classList.add(
+        "show"
+    );
 
-    setTimeout(() => {
+    setTimeout(()=>{
 
-        toast.classList.remove("show");
+        toast.classList.remove(
+            "show"
+        );
 
-    }, 2500);
+    },2500);
 }
 
-window.onclick = function(event) {
-
-    const modal =
-        document.getElementById("modal");
-
-    if (event.target === modal) {
-
-        closeModal();
-    }
-};
-
 document
-    .getElementById("search")
-    ?.addEventListener("input", function() {
+.getElementById("search")
+?.addEventListener(
+    "input",
+    function(){
 
         const search =
             this.value.toLowerCase();
 
         const cards =
-            document.querySelectorAll(".card");
+            document.querySelectorAll(
+                ".card"
+            );
 
-        cards.forEach(card => {
+        cards.forEach(card=>{
 
             const title =
                 card.querySelector("h3")
-                    .innerText
-                    .toLowerCase();
+                .innerText
+                .toLowerCase();
 
             card.style.display =
                 title.includes(search)
-                    ? "block"
-                    : "none";
+                ? "block"
+                : "none";
         });
-    });
+    }
+);
+
+window.onclick = function(event){
+
+    const modal =
+        document.getElementById(
+            "modal"
+        );
+
+    if(event.target === modal){
+
+        closeModal();
+    }
+};
 
 loadProducts();
 updateCartCount();
+loadUser();

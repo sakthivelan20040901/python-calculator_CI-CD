@@ -1,99 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>PolyShop</title>
+
     <link rel="stylesheet" href="style.css">
+
+    <script>
+
+        if (!localStorage.getItem("token")) {
+            window.location = "/login.html";
+        }
+
+    </script>
+
 </head>
+
 <body>
 
-    <!-- Navbar -->
+<header>
 
-    <header>
+    <div class="navbar">
 
-        <div class="navbar">
+        <div class="logo">
+            🛒 PolyShop
+        </div>
 
-            <div class="logo">
-                🛒 PolyShop
-            </div>
+        <div class="search-container">
 
-            <div class="search-container">
-
-                <input
-                    type="text"
-                    id="search"
-                    placeholder="Search products...">
-
-            </div>
-
-            <div class="nav-actions">
-
-                <button class="cart-btn"
-                        onclick="openCart()">
-
-                    🛒 Cart
-                    (<span id="cart-count">0</span>)
-
-                </button>
-
-            </div>
+            <input
+                type="text"
+                id="search"
+                placeholder="Search products...">
 
         </div>
 
-    </header>
+        <div class="nav-actions">
 
-    <!-- Hero Section -->
+            <button
+                class="profile-btn"
+                onclick="openProfile()">
 
-    <section class="hero">
+                👤
+                <span id="username-display">
+                    Profile
+                </span>
 
-        <h2>Welcome to PolyShop</h2>
+            </button>
 
-        <p>
-            Built using Node.js, Java,
-            Python, Go and PHP Microservices
-        </p>
+            <button
+                class="cart-btn"
+                onclick="openCart()">
 
-    </section>
+                🛒 Cart
+                (<span id="cart-count">0</span>)
 
-    <!-- Product Grid -->
-
-    <main>
-
-        <div
-            class="products"
-            id="products">
-
-        </div>
-
-    </main>
-
-    <!-- Modal -->
-
-    <div
-        id="modal"
-        class="modal">
-
-        <div class="modal-content">
-
-            <span
-                class="close"
-                onclick="closeModal()">
-
-                &times;
-
-            </span>
-
-            <div id="modal-body"></div>
+            </button>
 
         </div>
 
     </div>
 
-    <script src="script.js"></script>
-    <div id="toast" class="toast">
-    Product added to cart 🛒
+</header>
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>
+            Shop Everything You Need
+        </h1>
+
+        <p>
+            Electronics • Fashion • Books
+        </p>
+
+    </div>
+
+</section>
+
+<section class="categories">
+
+    <button class="category-btn">
+        Electronics
+    </button>
+
+    <button class="category-btn">
+        Fashion
+    </button>
+
+    <button class="category-btn">
+        Books
+    </button>
+
+</section>
+
+<main>
+
+    <div
+        class="products"
+        id="products">
+
+    </div>
+
+</main>
+
+<div
+    id="modal"
+    class="modal">
+
+    <div class="modal-content">
+
+        <span
+            class="close"
+            onclick="closeModal()">
+
+            &times;
+
+        </span>
+
+        <div id="modal-body"></div>
+
+    </div>
+
 </div>
 
+<div
+    id="toast"
+    class="toast">
+
+</div>
+
+<script src="script.js"></script>
+
 </body>
+
 </html>

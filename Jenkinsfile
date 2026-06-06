@@ -1,68 +1,91 @@
 pipeline {
-    agent any
 
-    stages {
+```
+agent any
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
+stages {
 
-        stage('Build Node') {
-            steps {
-                dir('node') {
-                    sh 'npm install'
-                }
-            }
-        }
+    stage('Checkout') {
 
-        stage('Build Python') {
-            steps {
-                dir('python') {
-                    sh 'pip3 install -r requirements.txt'
-                }
-            }
-        }
+        steps {
 
-        stage('Build Java') {
-            steps {
-                dir('java') {
-                    sh 'mvn clean package -DskipTests'
-                }
-            }
-        }
+            git 'https://github.com/sakthivelan20040901/YOUR_REPO.git'
 
-        stage('Build Go') {
-            steps {
-                dir('go') {
-                    sh 'go build'
-                }
-            }
-        }
-
-        stage('Build Docker Images') {
-            steps {
-                sh 'docker compose build'
-            }
-        }
-
-        stage('Deploy Containers') {
-            steps {
-                sh 'docker compose down || true'
-                sh 'docker compose up -d'
-            }
         }
     }
 
-    post {
+    stage('Validate Compose') {
 
-        success {
-            echo 'Deployment Successful'
-        }
+        steps {
 
-        failure {
-            echo 'Deployment Failed'
+            sh 'docker compose config'
+
         }
     }
+
+    stage('Build Containers') {
+
+        steps {
+
+            sh 'docker compose build'
+
+        }
+    }
+
+    stage('Deploy') {
+
+        steps {
+
+            sh 'docker compose down || true'
+
+            sh 'docker compose up -d'
+
+            sh 'sleep 30'
+
+        }
+    }
+
+    stage('Health Checks') {
+
+        steps {
+
+            sh 'curl -f http://localhost:3000/api/products'
+
+            sh 'curl -f http://localhost:8080/products'
+
+            sh 'curl -f http://localhost:5000/recommend/1'
+
+            sh 'curl -f http://localhost:8081/inventory/1'
+
+            sh 'curl -f "http://localhost:8082/?price=1000"'
+
+        }
+    }
+
+    stage('Verify Containers') {
+
+        steps {
+
+            sh 'docker compose ps'
+
+        }
+    }
+}
+
+post {
+
+    success {
+
+        echo "PolyShop deployment successful"
+
+    }
+
+    failure {
+
+        echo "Pipeline failed"
+
+    }
+}
+```
+
 }

@@ -144,7 +144,21 @@ public List<Map<String,Object>> getProducts() {
             "price",899,
             "category","Books",
             "image","https://source.unsplash.com/600x400/?python-book"
-        )
+        ),
+        Map.of("id",17,"name","Gaming Laptop","price",85000,"category","Electronics","image","https://source.unsplash.com/600x400/?gaming-laptop"),
+Map.of("id",18,"name","iPad","price",45000,"category","Electronics","image","https://source.unsplash.com/600x400/?ipad"),
+Map.of("id",19,"name","Smart TV","price",55000,"category","Electronics","image","https://source.unsplash.com/600x400/?smart-tv"),
+Map.of("id",20,"name","Power Bank","price",1500,"category","Electronics","image","https://source.unsplash.com/600x400/?power-bank"),
+Map.of("id",21,"name","Bluetooth Earbuds","price",2500,"category","Electronics","image","https://source.unsplash.com/600x400/?earbuds"),
+Map.of("id",22,"name","T-Shirt","price",699,"category","Fashion","image","https://source.unsplash.com/600x400/?tshirt"),
+Map.of("id",23,"name","Jacket","price",2999,"category","Fashion","image","https://source.unsplash.com/600x400/?jacket"),
+Map.of("id",24,"name","Cap","price",499,"category","Fashion","image","https://source.unsplash.com/600x400/?cap"),
+Map.of("id",25,"name","Sunglasses","price",1999,"category","Fashion","image","https://source.unsplash.com/600x400/?sunglasses"),
+Map.of("id",26,"name","Docker Deep Dive","price",899,"category","Books","image","https://source.unsplash.com/600x400/?docker-book"),
+Map.of("id",27,"name","Kubernetes Up & Running","price",1199,"category","Books","image","https://source.unsplash.com/600x400/?kubernetes-book"),
+Map.of("id",28,"name","AWS Cookbook","price",999,"category","Books","image","https://source.unsplash.com/600x400/?aws-book"),
+Map.of("id",29,"name","Spring Boot Guide","price",799,"category","Books","image","https://source.unsplash.com/600x400/?spring-book"),
+Map.of("id",30,"name","Go Programming","price",699,"category","Books","image","https://source.unsplash.com/600x400/?golang-book")
 
     );
 }
