@@ -45,7 +45,11 @@ Node.js Gateway Service
 ---
 
 ## 📦 Microservices
+## Microservices Architecture
 
+![Microservices Architecture](docs/microservices-architecture.png)
+
+---
 ### Node.js Gateway
 
 * Central API Gateway
@@ -190,7 +194,9 @@ Jenkins Pipeline
       ▼
 Production Environment
 ```
+## CI/CD Pipeline
 
+![CI/CD Pipeline](docs/cicd-pipeline.png)
 ---
 
 ## 🔍 Deployment Verification
